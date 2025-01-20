@@ -23,7 +23,24 @@ type SlashCommands struct {
 	Execute func(*Client, *InteractionCreate)
 }
 
-func (mc *InteractionCreate) SendMessage(client *Client, message *discordgo.WebhookEdit) *RespondMessage {
+func (mc *InteractionCreate) Deferred(client *Client) {
+	go client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseDeferredChannelMessageWithSource,
+	})
+}
+
+func (mc *InteractionCreate) Respond(client *Client, respond *discordgo.InteractionResponse) {
+	go client.Method().InteractionRespond(mc.Method().Interaction, respond)
+}
+
+func (mc *InteractionCreate) SendMessage(client *Client, message *discordgo.InteractionResponseData) {
+	go client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseChannelMessageWithSource,
+		Data: message,
+	})
+}
+
+func (mc *InteractionCreate) EditMessage(client *Client, message *discordgo.WebhookEdit) *RespondMessage {
 	msg, err := client.Method().InteractionResponseEdit(mc.Method().Interaction, message)
 	if err != nil {
 		log.Println("error sending complex message,", err)

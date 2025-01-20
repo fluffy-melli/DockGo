@@ -2,6 +2,7 @@ package main
 
 import (
 	"testing"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/fluffy-melli/DockGo"
@@ -23,14 +24,20 @@ func TestShard(t *testing.T) {
 	DockGo.Wait()
 }
 
-var Command = &DockGo.MessageCommands{
-	Builder: &DockGo.MessageBuilder{
-		Prefix:    "",
-		StartWith: true,
+var Command = &DockGo.SlashCommands{
+	Builder: &DockGo.SlashBuilder{
+		Name:        "야옹",
+		Description: "애오옹",
 	},
-	Execute: func(client *DockGo.Client, mc *DockGo.MessageCreate) {
-		ms := mc.SendMessage(client, &discordgo.MessageSend{})
-		ms.EditMessage(client, &discordgo.MessageEdit{})
+	Execute: func(c *DockGo.Client, ic *DockGo.InteractionCreate) {
+		ic.SendMessage(c, &discordgo.InteractionResponseData{
+			Content: "??",
+		})
+		time.Sleep(3 * time.Second)
+		var text = "?!!"
+		ic.EditMessage(c, &discordgo.WebhookEdit{
+			Content: &text,
+		})
 	},
 }
 

@@ -40,7 +40,7 @@ func (rm *RespondMessage) EditMessage(client *Client, message *discordgo.Message
 }
 
 func (rm *RespondMessage) DeleteMessage(client *Client) {
-	client.DeleteMessage(rm.Method().ChannelID, rm.Method().ID)
+	go client.DeleteMessage(rm.Method().ChannelID, rm.Method().ID)
 }
 
 func (bot *Client) Reference(guildID string, channelID string, messageID string) *discordgo.MessageReference {
