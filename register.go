@@ -7,15 +7,15 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func (bot *DockGo) Register(command interface{}) {
+func (bot *Client) Register(command interface{}) {
 	switch command := command.(type) {
 	case MessageCommands:
 	case *MessageCommands:
 		go bot.Method().AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
-			if m.Content == command.Builder.Name {
-				go command.Execute((*MessageCreate)(m))
-			} else if command.Builder.StartWith && strings.HasPrefix(m.Content, command.Builder.Name) {
-				go command.Execute((*MessageCreate)(m))
+			if m.Content == command.Builder.Prefix {
+				go command.Execute((*Client)(s), (*MessageCreate)(m))
+			} else if command.Builder.StartWith && strings.HasPrefix(m.Content, command.Builder.Prefix) {
+				go command.Execute((*Client)(s), (*MessageCreate)(m))
 			}
 		})
 	case SlashCommands:
@@ -29,7 +29,7 @@ func (bot *DockGo) Register(command interface{}) {
 				return
 			}
 			if i.ApplicationCommandData().Name == command.Builder.Name {
-				go command.Execute((*Interaction)(i))
+				go command.Execute((*Client)(s), (*Interaction)(i))
 			}
 		})
 	default:

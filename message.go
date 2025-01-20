@@ -5,7 +5,7 @@ import (
 )
 
 type MessageBuilder struct {
-	Name      string
+	Prefix    string
 	StartWith bool
 }
 
@@ -17,5 +17,5 @@ func (mc *MessageCreate) Method() *discordgo.MessageCreate {
 
 type MessageCommands struct {
 	Builder *MessageBuilder
-	Execute func(*MessageCreate)
+	Execute func(*Client, *MessageCreate)
 }

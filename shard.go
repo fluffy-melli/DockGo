@@ -3,12 +3,12 @@ package DockGo
 type Shard struct {
 	Total int
 	ID    int
-	Bot   *DockGo
+	Bot   *Client
 }
 
-func NewShard(token string, count int) []*DockGo {
+func NewShard(token string, count int) []*Client {
 	var total int
-	shardList := make([]*DockGo, 0)
+	shardList := make([]*Client, 0)
 	if count == 0 {
 		bot := NewBot(token)
 		total = (len(bot.Method().State.Guilds) + 999) / 1000

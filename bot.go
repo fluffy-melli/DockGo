@@ -9,31 +9,38 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-type DockGo discordgo.Session
+var Logger = true
 
-func (bot *DockGo) Method() *discordgo.Session {
+type Client discordgo.Session
+
+func (bot *Client) Method() *discordgo.Session {
 	return (*discordgo.Session)(bot)
 }
 
-func (bot *DockGo) Connect() {
+func (bot *Client) Connect() {
 	err := bot.Method().Open()
 	if err != nil {
 		log.Fatalln(err)
 	}
 }
 
-func (bot *DockGo) Ready(function func(*discordgo.Ready)) {
+func (bot *Client) Ready(function func(*Client, *Ready)) {
 	go bot.Method().AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
-		go function(r)
+		cl := (*Client)(s)
+		ry := (*Ready)(r)
+		if Logger {
+			ry.Logger(cl)
+		}
+		go function(cl, ry)
 	})
 }
 
-func NewBot(token string) *DockGo {
+func NewBot(token string) *Client {
 	bot, err := discordgo.New("Bot " + token)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	return (*DockGo)(bot)
+	return (*Client)(bot)
 }
 
 func Wait() {
