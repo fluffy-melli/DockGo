@@ -35,6 +35,11 @@ func (bot *Client) DeleteMessage(channelID, messageID string) {
 	}
 }
 
+func (rm *RespondMessage) Followup(client *Client, message *discordgo.MessageSend) *RespondMessage {
+	message.Reference = client.Reference(rm.Method().GuildID, rm.Method().ChannelID, rm.Method().ID)
+	return client.SendMessage(message, rm.Method().ChannelID)
+}
+
 func (rm *RespondMessage) EditMessage(client *Client, message *discordgo.MessageEdit) *RespondMessage {
 	return client.EditMessage(message, rm.Method().ChannelID, rm.Method().ID)
 }
