@@ -23,7 +23,7 @@ func (bot *DockGo) Connect() {
 }
 
 func (bot *DockGo) Ready(function func(*discordgo.Ready)) {
-	bot.Method().AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
+	go bot.Method().AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
 		go function(r)
 	})
 }
