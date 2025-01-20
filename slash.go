@@ -1,6 +1,10 @@
 package DockGo
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"log"
+
+	"github.com/bwmarrin/discordgo"
+)
 
 type Interaction discordgo.InteractionCreate
 
@@ -17,4 +21,12 @@ func (sb *SlashBuilder) Method() *discordgo.ApplicationCommand {
 type SlashCommands struct {
 	Builder *SlashBuilder
 	Execute func(*Client, *Interaction)
+}
+
+func (mc *Interaction) SendMessage(client *Client, message *discordgo.WebhookEdit) *RespondMessage {
+	msg, err := client.Method().InteractionResponseEdit(mc.Method().Interaction, message)
+	if err != nil {
+		log.Println("error sending complex message,", err)
+	}
+	return (*RespondMessage)(msg)
 }

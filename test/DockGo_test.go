@@ -23,19 +23,21 @@ func TestShard(t *testing.T) {
 	DockGo.Wait()
 }
 
+var Command = &DockGo.MessageCommands{
+	Builder: &DockGo.MessageBuilder{
+		Prefix:    "",
+		StartWith: true,
+	},
+	Execute: func(_ *DockGo.Client, mc *DockGo.MessageCreate) {
+		fmt.Println(mc.Method().Content)
+	},
+}
+
 func TestMain(m *testing.M) {
 	shard := DockGo.NewShard("~", 2)
 	for _, bot := range shard {
 		bot.Ready(func(_ *DockGo.Client, r *DockGo.Ready) {
-			bot.Register(&DockGo.MessageCommands{
-				Builder: &DockGo.MessageBuilder{
-					Prefix:    "",
-					StartWith: true,
-				},
-				Execute: func(_ *DockGo.Client, mc *DockGo.MessageCreate) {
-					fmt.Println(mc.Method().Content)
-				},
-			})
+			bot.Register(Command)
 		})
 		bot.Connect()
 	}
