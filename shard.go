@@ -1,11 +1,5 @@
 package DockGo
 
-type Shard struct {
-	Total int
-	ID    int
-	Bot   *Client
-}
-
 func NewShard(token string, count int) []*Client {
 	var total int
 	shardList := make([]*Client, 0)

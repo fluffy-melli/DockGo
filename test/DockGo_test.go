@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 
+	"github.com/bwmarrin/discordgo"
 	"github.com/fluffy-melli/DockGo"
 )
 
@@ -28,8 +28,9 @@ var Command = &DockGo.MessageCommands{
 		Prefix:    "",
 		StartWith: true,
 	},
-	Execute: func(_ *DockGo.Client, mc *DockGo.MessageCreate) {
-		fmt.Println(mc.Method().Content)
+	Execute: func(client *DockGo.Client, mc *DockGo.MessageCreate) {
+		ms := mc.SendMessage(client, &discordgo.MessageSend{})
+		ms.EditMessage(client, &discordgo.MessageEdit{})
 	},
 }
 
