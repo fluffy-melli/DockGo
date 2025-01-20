@@ -29,7 +29,7 @@ func (bot *DockGo) Register(command interface{}) {
 				return
 			}
 			if i.ApplicationCommandData().Name == command.Builder.Name {
-				go command.Handler((*Interaction)(i))
+				go command.Execute((*Interaction)(i))
 			}
 		})
 	default:

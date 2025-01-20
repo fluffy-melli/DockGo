@@ -16,5 +16,5 @@ func (sb *SlashBuilder) Method() *discordgo.ApplicationCommand {
 
 type SlashCommands struct {
 	Builder *SlashBuilder
-	Handler func(*Interaction)
+	Execute func(*Interaction)
 }

@@ -46,7 +46,7 @@ func TestMain(m *testing.M) {
 				Name:        "",
 				Description: "",
 			},
-			Handler: func(i *DockGo.Interaction) {
+			Execute: func(i *DockGo.Interaction) {
 				fmt.Println("")
 			},
 		})
