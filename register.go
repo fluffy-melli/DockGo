@@ -29,7 +29,7 @@ func (bot *Client) Register(command interface{}) {
 				return
 			}
 			if i.ApplicationCommandData().Name == command.Builder.Name {
-				go command.Execute((*Client)(s), (*Interaction)(i))
+				go command.Execute((*Client)(s), (*InteractionCreate)(i))
 			}
 		})
 	default:
