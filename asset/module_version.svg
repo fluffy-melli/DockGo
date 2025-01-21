@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="96" height="20" role="img" aria-label="module version:">
+    <title>module version:</title>
+    <g shape-rendering="crispEdges">
+        <rect width="53" height="20" fill="#555"/>
+        <rect x="53" width="43" height="20" fill="#a0ee6c"/>
+    </g>
+    <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110">
+        <text x="250" y="140" transform="scale(.1)" fill="#fff" textLength="410">version</text>
+        <text x="745" y="140" transform="scale(.1)" fill="#fff" textLength="320">v0.1.2</text>
+    </g>
+</svg>
