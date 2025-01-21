@@ -9,22 +9,29 @@ type MessageBuilder struct {
 	StartWith bool
 }
 
-type MessageCreate discordgo.MessageCreate
+type MessageCreate struct {
+	event  *discordgo.MessageCreate
+	client *Client
+}
 
 func (mc *MessageCreate) Method() *discordgo.MessageCreate {
-	return (*discordgo.MessageCreate)(mc)
+	return mc.event
+}
+
+func (mc *MessageCreate) Client() *Client {
+	return mc.client
 }
 
 type MessageCommands struct {
 	Builder *MessageBuilder
-	Execute func(*Client, *MessageCreate)
+	Execute func(*MessageCreate)
 }
 
-func (mc *MessageCreate) SendMessage(client *Client, message *discordgo.MessageSend) *RespondMessage {
-	return client.SendMessage(message, mc.Message.ChannelID)
+func (mc *MessageCreate) SendMessage(message *discordgo.MessageSend) *RespondMessage {
+	return mc.client.SendMessage(message, mc.event.Message.ChannelID)
 }
 
-func (mc *MessageCreate) ReplyMessage(client *Client, message *discordgo.MessageSend) *RespondMessage {
+func (mc *MessageCreate) ReplyMessage(message *discordgo.MessageSend) *RespondMessage {
 	message.Reference = mc.Method().Reference()
-	return client.SendMessage(message, mc.Message.ChannelID)
+	return mc.client.SendMessage(message, mc.event.Message.ChannelID)
 }

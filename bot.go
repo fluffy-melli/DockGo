@@ -23,14 +23,16 @@ func (bot *Client) Connect() {
 	}
 }
 
-func (bot *Client) Ready(function func(*Client, *Ready)) {
+func (bot *Client) Ready(function func(*Ready)) {
 	go bot.Method().AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
-		cl := (*Client)(s)
-		ry := (*Ready)(r)
-		if Logger {
-			ry.Logger(cl)
+		respond := &Ready{
+			event:  r,
+			client: (*Client)(s),
 		}
-		go function(cl, ry)
+		if Logger {
+			respond.Logger(respond.client)
+		}
+		go function(respond)
 	})
 }
 

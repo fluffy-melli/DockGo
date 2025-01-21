@@ -12,9 +12,15 @@ func (bot *Client) Register(command interface{}) {
 	case *MessageCommands:
 		go bot.Method().AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
 			if m.Content == command.Builder.Prefix {
-				go command.Execute((*Client)(s), (*MessageCreate)(m))
+				go command.Execute(&MessageCreate{
+					event:  m,
+					client: (*Client)(s),
+				})
 			} else if command.Builder.StartWith && strings.HasPrefix(m.Content, command.Builder.Prefix) {
-				go command.Execute((*Client)(s), (*MessageCreate)(m))
+				go command.Execute(&MessageCreate{
+					event:  m,
+					client: (*Client)(s),
+				})
 			}
 		})
 	case SlashCommands:
@@ -28,7 +34,10 @@ func (bot *Client) Register(command interface{}) {
 				return
 			}
 			if i.ApplicationCommandData().Name == command.Builder.Name {
-				go command.Execute((*Client)(s), (*InteractionCreate)(i))
+				go command.Execute(&SlashCreate{
+					event:  i,
+					client: (*Client)(s),
+				})
 			}
 		})
 	default:

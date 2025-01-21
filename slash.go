@@ -4,10 +4,17 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-type InteractionCreate discordgo.InteractionCreate
+type SlashCreate struct {
+	event  *discordgo.InteractionCreate
+	client *Client
+}
 
-func (it *InteractionCreate) Method() *discordgo.InteractionCreate {
-	return (*discordgo.InteractionCreate)(it)
+func (it *SlashCreate) Method() *discordgo.InteractionCreate {
+	return it.event
+}
+
+func (it *SlashCreate) Client() *Client {
+	return it.client
 }
 
 type SlashBuilder discordgo.ApplicationCommand
@@ -18,28 +25,28 @@ func (sb *SlashBuilder) Method() *discordgo.ApplicationCommand {
 
 type SlashCommands struct {
 	Builder *SlashBuilder
-	Execute func(*Client, *InteractionCreate)
+	Execute func(*SlashCreate)
 }
 
-func (mc *InteractionCreate) Deferred(client *Client) {
-	go client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
+func (mc *SlashCreate) Deferred() {
+	go mc.client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseDeferredChannelMessageWithSource,
 	})
 }
 
-func (mc *InteractionCreate) Respond(client *Client, respond *discordgo.InteractionResponse) {
-	go client.Method().InteractionRespond(mc.Method().Interaction, respond)
+func (mc *SlashCreate) Respond(respond *discordgo.InteractionResponse) {
+	go mc.client.Method().InteractionRespond(mc.Method().Interaction, respond)
 }
 
-func (mc *InteractionCreate) SendMessage(client *Client, message *discordgo.InteractionResponseData) {
-	go client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
+func (mc *SlashCreate) SendMessage(message *discordgo.InteractionResponseData) {
+	go mc.client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: message,
 	})
 }
 
-func (mc *InteractionCreate) EditMessage(client *Client, message *discordgo.WebhookEdit) *RespondMessage {
-	msg, err := client.Method().InteractionResponseEdit(mc.Method().Interaction, message)
+func (mc *SlashCreate) EditMessage(message *discordgo.WebhookEdit) *RespondMessage {
+	msg, err := mc.client.Method().InteractionResponseEdit(mc.Method().Interaction, message)
 	if err != nil {
 		Print(ERROR, "\033[41m\033[33m%v\033[0m", err)
 	}

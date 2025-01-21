@@ -4,10 +4,17 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-type Ready discordgo.Ready
+type Ready struct {
+	event  *discordgo.Ready
+	client *Client
+}
 
 func (mc *Ready) Method() *discordgo.Ready {
-	return (*discordgo.Ready)(mc)
+	return mc.event
+}
+
+func (mc *Ready) Client() *Client {
+	return mc.client
 }
 
 func (mc *Ready) Logger(client *Client) {

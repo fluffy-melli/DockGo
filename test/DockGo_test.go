@@ -10,7 +10,7 @@ import (
 
 func TestBot(t *testing.T) {
 	bot := DockGo.NewBot("~")
-	bot.Ready(func(_ *DockGo.Client, r *DockGo.Ready) {})
+	bot.Ready(func(r *DockGo.Ready) {})
 	bot.Connect()
 	DockGo.Wait()
 }
@@ -18,7 +18,7 @@ func TestBot(t *testing.T) {
 func TestShard(t *testing.T) {
 	shard := DockGo.NewShard("~", 2)
 	for _, bot := range shard {
-		bot.Ready(func(_ *DockGo.Client, r *DockGo.Ready) {})
+		bot.Ready(func(r *DockGo.Ready) {})
 		bot.Connect()
 	}
 	DockGo.Wait()
@@ -29,13 +29,13 @@ var Command = &DockGo.SlashCommands{
 		Name:        "야옹",
 		Description: "애오옹",
 	},
-	Execute: func(c *DockGo.Client, ic *DockGo.InteractionCreate) {
-		ic.SendMessage(c, &discordgo.InteractionResponseData{
+	Execute: func(ic *DockGo.SlashCreate) {
+		ic.SendMessage(&discordgo.InteractionResponseData{
 			Content: "??",
 		})
 		time.Sleep(3 * time.Second)
 		var text = "?!!"
-		ic.EditMessage(c, &discordgo.WebhookEdit{
+		ic.EditMessage(&discordgo.WebhookEdit{
 			Content: &text,
 		})
 	},
@@ -44,7 +44,7 @@ var Command = &DockGo.SlashCommands{
 func TestMain(m *testing.M) {
 	shard := DockGo.NewShard("~", 2)
 	for _, bot := range shard {
-		bot.Ready(func(_ *DockGo.Client, r *DockGo.Ready) {
+		bot.Ready(func(r *DockGo.Ready) {
 			bot.Register(Command)
 		})
 		bot.Connect()
