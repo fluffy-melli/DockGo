@@ -27,11 +27,11 @@ type MessageCommands struct {
 	Execute func(*MessageCreate)
 }
 
-func (mc *MessageCreate) SendMessage(message *discordgo.MessageSend) *RespondMessage {
+func (mc *MessageCreate) SendMessage(message *discordgo.MessageSend) (*RespondMessage, error) {
 	return mc.client.SendMessage(message, mc.event.Message.ChannelID)
 }
 
-func (mc *MessageCreate) ReplyMessage(message *discordgo.MessageSend) *RespondMessage {
+func (mc *MessageCreate) ReplyMessage(message *discordgo.MessageSend) (*RespondMessage, error) {
 	message.Reference = mc.Method().Reference()
 	return mc.client.SendMessage(message, mc.event.Message.ChannelID)
 }

@@ -29,27 +29,43 @@ type SlashCommands struct {
 	Execute func(*SlashCreate)
 }
 
-func (mc *SlashCreate) Deferred() {
-	go mc.client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
+func (mc *SlashCreate) Deferred() error {
+	err := mc.client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseDeferredChannelMessageWithSource,
 	})
+	if err != nil {
+		Print(ERROR, "\033[41m\033[33m%v\033[0m", err)
+		return err
+	}
+	return nil
 }
 
-func (mc *SlashCreate) Respond(respond *discordgo.InteractionResponse) {
-	go mc.client.Method().InteractionRespond(mc.Method().Interaction, respond)
+func (mc *SlashCreate) Respond(respond *discordgo.InteractionResponse) error {
+	err := mc.client.Method().InteractionRespond(mc.Method().Interaction, respond)
+	if err != nil {
+		Print(ERROR, "\033[41m\033[33m%v\033[0m", err)
+		return err
+	}
+	return nil
 }
 
-func (mc *SlashCreate) SendMessage(message *discordgo.InteractionResponseData) {
-	go mc.client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
+func (mc *SlashCreate) SendMessage(message *discordgo.InteractionResponseData) error {
+	err := mc.client.Method().InteractionRespond(mc.Method().Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: message,
 	})
+	if err != nil {
+		Print(ERROR, "\033[41m\033[33m%v\033[0m", err)
+		return err
+	}
+	return nil
 }
 
-func (mc *SlashCreate) EditMessage(message *discordgo.WebhookEdit) *RespondMessage {
+func (mc *SlashCreate) EditMessage(message *discordgo.WebhookEdit) (*RespondMessage, error) {
 	msg, err := mc.client.Method().InteractionResponseEdit(mc.Method().Interaction, message)
 	if err != nil {
 		Print(ERROR, "\033[41m\033[33m%v\033[0m", err)
+		return nil, err
 	}
-	return (*RespondMessage)(msg)
+	return (*RespondMessage)(msg), nil
 }
