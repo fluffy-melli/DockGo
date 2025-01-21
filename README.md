@@ -1,5 +1,7 @@
 <div align="center">
-  
+
+  [![discordGo Version](https://github.com/fluffy-melli/DockGo/blob/main/asset/discordgo_version.svg)](https://pkg.go.dev/github.com/bwmarrin/discordgo@v0.28.1)
+  [![Module Version](https://github.com/fluffy-melli/DockGo/blob/main/asset/module_version.svg)](https://pkg.go.dev/github.com/fluffy-melli/korcen-go)
   [![DockGo](https://github.com/fluffy-melli/DockGo/blob/main/asset/logo.png)](https://pkg.go.dev/github.com/fluffy-melli/DockGo)
 </div>
 
