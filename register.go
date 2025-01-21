@@ -1,7 +1,6 @@
 package DockGo
 
 import (
-	"log"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -22,7 +21,7 @@ func (bot *Client) Register(command interface{}) {
 	case *SlashCommands:
 		_, err := bot.Method().ApplicationCommandCreate(bot.Method().State.User.ID, "", command.Builder.Method())
 		if err != nil {
-			log.Fatalln(err)
+			Error(ERROR, "%v", err)
 		}
 		go bot.Method().AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			if i.Type == discordgo.InteractionMessageComponent {
@@ -33,6 +32,6 @@ func (bot *Client) Register(command interface{}) {
 			}
 		})
 	default:
-		log.Fatalln("unknow type")
+		Error(ERROR, "unknown type : %v", command)
 	}
 }

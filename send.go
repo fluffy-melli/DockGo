@@ -1,8 +1,6 @@
 package DockGo
 
 import (
-	"log"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -15,7 +13,7 @@ func (rm *RespondMessage) Method() *discordgo.Message {
 func (bot *Client) SendMessage(message *discordgo.MessageSend, channelID string) *RespondMessage {
 	msg, err := bot.Method().ChannelMessageSendComplex(channelID, message)
 	if err != nil {
-		log.Println("error sending complex message,", err)
+		Print(ERROR, "%v", err)
 	}
 	return (*RespondMessage)(msg)
 }
@@ -23,7 +21,7 @@ func (bot *Client) SendMessage(message *discordgo.MessageSend, channelID string)
 func (bot *Client) EditMessage(message *discordgo.MessageEdit, channelID, messageID string) *RespondMessage {
 	msg, err := bot.Method().ChannelMessageEditComplex(message)
 	if err != nil {
-		log.Println("error editing complex message,", err)
+		Print(ERROR, "%v", err)
 	}
 	return (*RespondMessage)(msg)
 }
@@ -31,7 +29,7 @@ func (bot *Client) EditMessage(message *discordgo.MessageEdit, channelID, messag
 func (bot *Client) DeleteMessage(channelID, messageID string) {
 	err := bot.Method().ChannelMessageDelete(channelID, messageID)
 	if err != nil {
-		log.Println("error deleteing complex message,", err)
+		Print(ERROR, "%v", err)
 	}
 }
 

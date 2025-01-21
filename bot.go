@@ -1,7 +1,6 @@
 package DockGo
 
 import (
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -20,7 +19,7 @@ func (bot *Client) Method() *discordgo.Session {
 func (bot *Client) Connect() {
 	err := bot.Method().Open()
 	if err != nil {
-		log.Fatalln(err)
+		Error(ERROR, "%v", err)
 	}
 }
 
@@ -38,7 +37,7 @@ func (bot *Client) Ready(function func(*Client, *Ready)) {
 func NewBot(token string) *Client {
 	bot, err := discordgo.New("Bot " + token)
 	if err != nil {
-		log.Fatalln(err)
+		Error(ERROR, "%v", err)
 	}
 	return (*Client)(bot)
 }

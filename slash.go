@@ -1,8 +1,6 @@
 package DockGo
 
 import (
-	"log"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -43,7 +41,7 @@ func (mc *InteractionCreate) SendMessage(client *Client, message *discordgo.Inte
 func (mc *InteractionCreate) EditMessage(client *Client, message *discordgo.WebhookEdit) *RespondMessage {
 	msg, err := client.Method().InteractionResponseEdit(mc.Method().Interaction, message)
 	if err != nil {
-		log.Println("error sending complex message,", err)
+		Print(ERROR, "%v", err)
 	}
 	return (*RespondMessage)(msg)
 }
