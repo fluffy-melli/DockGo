@@ -5,7 +5,7 @@ import (
 )
 
 type SlashCreate struct {
-	Options map[string]any
+	Options map[string]*discordgo.ApplicationCommandInteractionDataOption
 	event   *discordgo.InteractionCreate
 	client  *Client
 }

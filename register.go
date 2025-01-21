@@ -34,34 +34,9 @@ func (bot *Client) Register(command interface{}) {
 				return
 			}
 			if i.ApplicationCommandData().Name == command.Builder.Name {
-				var options = make(map[string]any)
+				var options = make(map[string]*discordgo.ApplicationCommandInteractionDataOption)
 				for _, option := range i.ApplicationCommandData().Options {
-					switch option.Type {
-					case discordgo.ApplicationCommandOptionSubCommand:
-						options[option.Name] = option.Value.(string)
-					case discordgo.ApplicationCommandOptionSubCommandGroup:
-						options[option.Name] = option.Value.(string)
-					case discordgo.ApplicationCommandOptionString:
-						options[option.Name] = option.Value.(string)
-					case discordgo.ApplicationCommandOptionInteger:
-						options[option.Name] = option.Value.(int)
-					case discordgo.ApplicationCommandOptionBoolean:
-						options[option.Name] = option.Value.(bool)
-					case discordgo.ApplicationCommandOptionUser:
-						options[option.Name] = option.Value.(discordgo.User)
-					case discordgo.ApplicationCommandOptionChannel:
-						options[option.Name] = option.Value.(discordgo.Channel)
-					case discordgo.ApplicationCommandOptionRole:
-						options[option.Name] = option.Value.(discordgo.Role)
-					case discordgo.ApplicationCommandOptionMentionable:
-						options[option.Name] = option.Value.(discordgo.User)
-					case discordgo.ApplicationCommandOptionNumber:
-						options[option.Name] = option.Value.(float64)
-					case discordgo.ApplicationCommandOptionAttachment:
-						options[option.Name] = option.Value.(*discordgo.MessageAttachment)
-					default:
-						Error(ERROR, "\033[41m\033[33munknown type : %v\033[0m", option.Type)
-					}
+					options[option.Name] = option
 				}
 				go command.Execute(&SlashCreate{
 					event:   i,
