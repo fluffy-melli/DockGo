@@ -5,8 +5,9 @@ import (
 )
 
 type SlashCreate struct {
-	event  *discordgo.InteractionCreate
-	client *Client
+	Options map[string]any
+	event   *discordgo.InteractionCreate
+	client  *Client
 }
 
 func (it *SlashCreate) Method() *discordgo.InteractionCreate {
