@@ -19,7 +19,7 @@ func (bot *Client) Method() *discordgo.Session {
 func (bot *Client) Connect() {
 	err := bot.Method().Open()
 	if err != nil {
-		Error(ERROR, "%v", err)
+		Error(ERROR, "\033[41m\033[33m%v\033[0m", err)
 	}
 }
 
@@ -37,7 +37,7 @@ func (bot *Client) Ready(function func(*Client, *Ready)) {
 func NewBot(token string) *Client {
 	bot, err := discordgo.New("Bot " + token)
 	if err != nil {
-		Error(ERROR, "%v", err)
+		Error(ERROR, "\033[41m\033[33m%v\033[0m", err)
 	}
 	return (*Client)(bot)
 }

@@ -42,7 +42,6 @@ var Command = &DockGo.SlashCommands{
 }
 
 func TestMain(m *testing.M) {
-	DockGo.LoadEnv()
 	shard := DockGo.NewShard("~", 2)
 	for _, bot := range shard {
 		bot.Ready(func(_ *DockGo.Client, r *DockGo.Ready) {

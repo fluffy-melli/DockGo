@@ -21,7 +21,7 @@ func (bot *Client) Register(command interface{}) {
 	case *SlashCommands:
 		_, err := bot.Method().ApplicationCommandCreate(bot.Method().State.User.ID, "", command.Builder.Method())
 		if err != nil {
-			Error(ERROR, "%v", err)
+			Error(ERROR, "\033[41m\033[33m%v\033[0m", err)
 		}
 		go bot.Method().AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			if i.Type == discordgo.InteractionMessageComponent {
@@ -32,6 +32,6 @@ func (bot *Client) Register(command interface{}) {
 			}
 		})
 	default:
-		Error(ERROR, "unknown type : %v", command)
+		Error(ERROR, "\033[41m\033[33munknown type : %v\033[0m", command)
 	}
 }

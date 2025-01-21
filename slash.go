@@ -41,7 +41,7 @@ func (mc *InteractionCreate) SendMessage(client *Client, message *discordgo.Inte
 func (mc *InteractionCreate) EditMessage(client *Client, message *discordgo.WebhookEdit) *RespondMessage {
 	msg, err := client.Method().InteractionResponseEdit(mc.Method().Interaction, message)
 	if err != nil {
-		Print(ERROR, "%v", err)
+		Print(ERROR, "\033[41m\033[33m%v\033[0m", err)
 	}
 	return (*RespondMessage)(msg)
 }
