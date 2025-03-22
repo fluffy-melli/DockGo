@@ -8,7 +8,6 @@ import (
 
 func (bot *Client) Register(command interface{}) {
 	switch command := command.(type) {
-	case MessageCommands:
 	case *MessageCommands:
 		go bot.Method().AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
 			if m.Content == command.Builder.Prefix {
@@ -23,7 +22,6 @@ func (bot *Client) Register(command interface{}) {
 				})
 			}
 		})
-	case SlashCommands:
 	case *SlashCommands:
 		_, err := bot.Method().ApplicationCommandCreate(bot.Method().State.User.ID, "", command.Builder.Method())
 		if err != nil {
@@ -42,6 +40,18 @@ func (bot *Client) Register(command interface{}) {
 					event:   i,
 					client:  (*Client)(s),
 					Options: options,
+				})
+			}
+		})
+	case *ButtonCommands:
+		go bot.Method().AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+			if i.Type == discordgo.InteractionApplicationCommand {
+				return
+			}
+			if i.Type == discordgo.InteractionMessageComponent && i.MessageComponentData().CustomID == command.Builder.CustomID {
+				go command.Execute(&ButtonCreate{
+					event:  i,
+					client: (*Client)(s),
 				})
 			}
 		})
