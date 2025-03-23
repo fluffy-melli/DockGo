@@ -59,3 +59,16 @@ func (bot *Client) Register(command interface{}) {
 		Error(ERROR, "\033[41m\033[33munknown type : %v\033[0m", command)
 	}
 }
+
+func (bot *Client) ResetSlash() {
+	commands, err := bot.Method().ApplicationCommands(bot.Method().State.User.ID, "")
+	if err != nil {
+		Error(ERROR, "\033[41m\033[33m%v\033[0m", err)
+	}
+	for _, command := range commands {
+		err := bot.Method().ApplicationCommandDelete(bot.Method().State.User.ID, "", command.ID)
+		if err != nil {
+			Error(ERROR, "\033[41m\033[33m%v\033[0m", err)
+		}
+	}
+}
